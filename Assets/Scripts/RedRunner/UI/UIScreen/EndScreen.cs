@@ -18,10 +18,37 @@ namespace RedRunner.UI
         {
             ResetButton.SetButtonAction(() =>
             {
+                if (GameManager.Singleton.SaveState != Vector2.zero)
+                {
+                    Debug.Log("Quickload!");
+                    GameManager.Singleton.m_QuickLoading = true;
+                    GameManager.Singleton.Reset();
+                    var ingameScreen = UIManager.Singleton.GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
+                    UIManager.Singleton.OpenScreen(ingameScreen);
+                    GameManager.Singleton.StartGame();
+                }
+                else
+                {
+                    Debug.Log("Slowloading.");
+                    GameManager.Singleton.Reset();
+                    var ingameScreen = UIManager.Singleton.GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
+                    UIManager.Singleton.OpenScreen(ingameScreen);
+                    GameManager.Singleton.StartGame();
+                }
+            });
+
+            HomeButton.SetButtonAction(() =>
+            {
+                GameManager.Singleton.SaveState = Vector2.zero;
                 GameManager.Singleton.Reset();
                 var ingameScreen = UIManager.Singleton.GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
                 UIManager.Singleton.OpenScreen(ingameScreen);
                 GameManager.Singleton.StartGame();
+            });
+
+            ExitButton.SetButtonAction(() =>
+            {
+
             });
         }
 
