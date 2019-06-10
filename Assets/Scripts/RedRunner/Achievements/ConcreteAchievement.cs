@@ -1,14 +1,18 @@
-﻿using System.Collections;
+﻿using RedRunner;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConcreteAchievement : AchievementBase
+public class ConcreteAchievement : BaseAchievement
 {
-    private string _state;
-
-    public string State
+    AchievementSystem AS = new AchievementSystem();
+    public void checker()
     {
-        get { return _state; }
-        set { _state = value; }
+        if (GameManager.Singleton.m_Coin.Value == 100)
+        {
+            Attach(AS);
+            Notify();
+            Detach(AS);
+        }
     }
 }

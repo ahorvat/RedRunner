@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AchievementBase : MonoBehaviour
+public abstract class BaseAchievement
 {
     private List<Observer> _observers = new List<Observer>();
 

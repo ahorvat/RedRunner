@@ -20,6 +20,8 @@ namespace RedRunner.Collectables
 		[SerializeField]
 		protected bool m_UseOnTriggerEnter2D = true;
 
+        ConcreteAchievement coinAchievement = new ConcreteAchievement();
+
 		public override SpriteRenderer SpriteRenderer {
 			get {
 				return m_SpriteRenderer;
@@ -66,6 +68,8 @@ namespace RedRunner.Collectables
 		public override void Collect ()
 		{
             GameManager.Singleton.m_Coin.Value++;
+            Debug.Log(GameManager.Singleton.m_Coin.Value);
+            coinAchievement.checker();
 			m_Animator.SetTrigger (COLLECT_TRIGGER);
 			m_ParticleSystem.Play ();
 			m_SpriteRenderer.enabled = false;
