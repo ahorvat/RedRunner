@@ -86,25 +86,28 @@ namespace RedRunner.TerrainGeneration
 			GameManager.OnReset += Reset;
 		}
 
-		protected virtual void Reset ()
-		{
-			m_Reset = true;
-			RemoveAll ();
-			m_CurrentX = 0f;
-			m_LastBlock = null;
-			m_LastBackgroundBlock = null;
-			for ( int i = 0; i < m_BackgroundLayers.Length; i++ )
-			{
-				m_BackgroundLayers [ i ].Reset ();
-			}
-			m_FathestBackgroundX = 0f;
-			m_Blocks.Clear ();
-			m_BackgroundBlocks.Clear ();
-			m_GeneratedStartBlocksCount = 0;
-			m_GeneratedMiddleBlocksCount = 0;
-			m_GeneratedEndBlocksCount = 0;
-			m_Reset = false;
-		}
+        protected virtual void Reset()
+        {
+            if (!GameManager.Singleton.m_QuickLoading)
+            {
+                m_Reset = true;
+                RemoveAll();
+                m_CurrentX = 0f;
+                m_LastBlock = null;
+                m_LastBackgroundBlock = null;
+                for (int i = 0; i < m_BackgroundLayers.Length; i++)
+                {
+                    m_BackgroundLayers[i].Reset();
+                }
+                m_FathestBackgroundX = 0f;
+                m_Blocks.Clear();
+                m_BackgroundBlocks.Clear();
+                m_GeneratedStartBlocksCount = 0;
+                m_GeneratedMiddleBlocksCount = 0;
+                m_GeneratedEndBlocksCount = 0;
+                m_Reset = false;
+            }
+        }
 
 		protected virtual void OnDestroy ()
 		{

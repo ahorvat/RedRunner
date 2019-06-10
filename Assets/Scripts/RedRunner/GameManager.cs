@@ -10,6 +10,7 @@ using BayatGames.SaveGameFree.Serializers;
 using RedRunner.Characters;
 using RedRunner.Collectables;
 using RedRunner.TerrainGeneration;
+using Assets.Scripts.Savestates;
 
 namespace RedRunner
 {
@@ -51,12 +52,15 @@ namespace RedRunner
         private bool m_GameRunning = false;
         private bool m_AudioEnabled = true;
 
+        private SaveStateManager m_SaveStateManager = new SaveStateManager();
+
         /// <summary>
         /// This is my developed callbacks compoents, because callbacks are so dangerous to use we need something that automate the sub/unsub to functions
         /// with this in-house developed callbacks feature, we garantee that the callback will be removed when we don't need it.
         /// </summary>
         public Property<int> m_Coin = new Property<int>(0);
 
+        public bool m_QuickLoading { get; set; } = false;
 
         #region Getters
         public bool gameStarted
@@ -65,6 +69,12 @@ namespace RedRunner
             {
                 return m_GameStarted;
             }
+        }
+
+        public SaveState SaveState
+        {
+            get => m_SaveStateManager.SaveState;
+            set => m_SaveStateManager.SaveState = value;
         }
 
         public bool gameRunning
