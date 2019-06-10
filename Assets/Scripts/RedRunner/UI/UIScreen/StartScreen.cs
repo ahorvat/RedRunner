@@ -16,17 +16,25 @@ namespace RedRunner.UI
         [SerializeField]
         protected Button ExitButton = null;
 
+        private static Singleton<StartScreen> _singleton;
+
+        public StartScreen()
+        {
+            _singleton = new Singleton<StartScreen>(this);
+        }
+
+        public static StartScreen GetInstance()
+        {
+            return _singleton.GetInstance();
+        }
+
         private void Start()
         {
             PlayButton.SetButtonAction(() =>
             {
                 var uiManager = UIManager.Singleton;
-                var InGameScreen = uiManager.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.IN_GAME_SCREEN);
-                if (InGameScreen != null)
-                {
-                    uiManager.OpenScreen(InGameScreen);
-                    GameManager.Singleton.StartGame();
-                }
+                uiManager.TransitionTo(new GameState_InGame());
+                GameManager.Singleton.StartGame();
             });
 
             ExitButton.SetButtonAction(() =>

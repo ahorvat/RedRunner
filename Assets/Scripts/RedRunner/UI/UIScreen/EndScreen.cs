@@ -14,6 +14,18 @@ namespace RedRunner.UI
         [SerializeField]
         protected Button ExitButton = null;
 
+        private static Singleton<EndScreen> _singleton;
+
+        public EndScreen()
+        {
+            _singleton = new Singleton<EndScreen>(this);
+        }
+
+        public static EndScreen GetInstance()
+        {
+            return _singleton.GetInstance();
+        }
+
         private void Start()
         {
             ResetButton.SetButtonAction(() =>
@@ -23,16 +35,16 @@ namespace RedRunner.UI
                     Debug.Log("Quickload!");
                     GameManager.Singleton.m_QuickLoading = true;
                     GameManager.Singleton.Reset();
-                    var ingameScreen = UIManager.Singleton.GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
-                    UIManager.Singleton.OpenScreen(ingameScreen);
+                    var uiManager = UIManager.Singleton;
+                    uiManager.TransitionTo(new GameState_InGame());
                     GameManager.Singleton.StartGame();
                 }
                 else
                 {
                     Debug.Log("Slowloading.");
                     GameManager.Singleton.Reset();
-                    var ingameScreen = UIManager.Singleton.GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
-                    UIManager.Singleton.OpenScreen(ingameScreen);
+                    var uiManager = UIManager.Singleton;
+                    uiManager.TransitionTo(new GameState_InGame());
                     GameManager.Singleton.StartGame();
                 }
             });
@@ -41,8 +53,8 @@ namespace RedRunner.UI
             {
                 GameManager.Singleton.SaveState = Vector2.zero;
                 GameManager.Singleton.Reset();
-                var ingameScreen = UIManager.Singleton.GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
-                UIManager.Singleton.OpenScreen(ingameScreen);
+                var uiManager = UIManager.Singleton;
+                uiManager.TransitionTo(new GameState_InGame());
                 GameManager.Singleton.StartGame();
             });
 

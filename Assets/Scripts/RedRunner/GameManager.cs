@@ -167,8 +167,8 @@ namespace RedRunner
             yield return new WaitForSecondsRealtime(1.5f);
 
             EndGame();
-            var endScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.END_SCREEN);
-            UIManager.Singleton.OpenScreen(endScreen);
+            var uiManager = UIManager.Singleton;
+            uiManager.TransitionTo(new GameState_End());
         }
 
         private void Start()
@@ -181,7 +181,6 @@ namespace RedRunner
         public void Init()
         {
             EndGame();
-            UIManager.Singleton.Init();
             StartCoroutine(Load());
         }
 
@@ -202,9 +201,9 @@ namespace RedRunner
 
         IEnumerator Load()
         {
-            var startScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.START_SCREEN);
             yield return new WaitForSecondsRealtime(3f);
-            UIManager.Singleton.OpenScreen(startScreen);
+            var uiManager = UIManager.Singleton;
+            uiManager.TransitionTo(new GameState_Start());
         }
 
         void OnApplicationQuit()

@@ -10,12 +10,27 @@ namespace RedRunner.UI
         [SerializeField]
         protected Button PauseButton = null;
 
+        [SerializeField]
+        protected Button InfoButton = null;
+
+        private static Singleton<InGameScreen> _singleton;
+
+        public InGameScreen()
+        {
+            _singleton = new Singleton<InGameScreen>(this);
+        }
+
+        public static InGameScreen GetInstance()
+        {
+            return _singleton.GetInstance();
+        }
+       
         private void Start()
         {
             PauseButton.SetButtonAction(() =>
             {
-                var pauseScreen = UIManager.Singleton.UISCREENS.Find(el => el.ScreenInfo == UIScreenInfo.PAUSE_SCREEN);
-                UIManager.Singleton.OpenScreen(pauseScreen);
+                var uiManager = UIManager.Singleton;
+                uiManager.TransitionTo(new GameState_Pause());
                 GameManager.Singleton.StopGame();
             });
         }

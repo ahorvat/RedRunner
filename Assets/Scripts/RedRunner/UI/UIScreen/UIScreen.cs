@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -9,8 +10,6 @@ namespace RedRunner.UI
 {
 	public class UIScreen : MonoBehaviour
 	{
-        [SerializeField]
-        internal UIScreenInfo ScreenInfo;
 		[SerializeField]
 		protected Animator m_Animator;
 		[SerializeField]
@@ -25,6 +24,6 @@ namespace RedRunner.UI
             m_CanvasGroup.blocksRaycasts = open;
             IsOpen = open;
         }
-	}
+    }
 
 }
