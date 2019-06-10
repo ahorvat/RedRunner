@@ -6,18 +6,8 @@ using System.Linq;
 
 namespace RedRunner
 {
-    public enum UIScreenInfo
-    {
-        LOADING_SCREEN,
-        START_SCREEN,
-        END_SCREEN,
-        PAUSE_SCREEN,
-        IN_GAME_SCREEN
-    }
-
     public class UIManager : MonoBehaviour
     {
-
         private static UIManager m_Singleton;
 
         public static UIManager Singleton
@@ -28,9 +18,8 @@ namespace RedRunner
             }
         }
 
-        [SerializeField]
-        private List<UIScreen> m_Screens;
-        private UIScreen m_ActiveScreen;
+        private UIScreenState _gameState = null;
+
         private UIWindow m_ActiveWindow;
         [SerializeField]
         private Texture2D m_CursorDefaultTexture;
@@ -39,21 +28,9 @@ namespace RedRunner
         [SerializeField]
         private float m_CursorHideDelay = 1f;
 
-        public List<UIScreen> UISCREENS
-        {
-            get
-            {
-                return m_Screens;
-            }
-        }
-
-        public UIScreen GetUIScreen(UIScreenInfo screenInfo)
-        {
-            return m_Screens.Find(el => el.ScreenInfo == screenInfo);
-        }
-
         void Awake()
         {
+            // Create Singleton
             if (m_Singleton != null)
             {
                 Destroy(gameObject);
@@ -63,46 +40,37 @@ namespace RedRunner
             Cursor.SetCursor(m_CursorDefaultTexture, Vector2.zero, CursorMode.Auto);
         }
 
-        void Start()
+        public void TransitionTo(UIScreenState state)
         {
-            Init();
+            this._gameState.CloseScreen();
+            this._gameState = state;
+            this._gameState.OpenScreen();
         }
 
-        public void Init()
+        void Start()
         {
-            var loadingScreen = GetUIScreen(UIScreenInfo.LOADING_SCREEN);
-            OpenScreen(loadingScreen);
+            this._gameState = new GameState_Loading();
+            _gameState.OpenScreen();
         }
 
         void Update()
         {
             if (Input.GetButtonDown("Cancel"))
             {
-                //Added enumeration to store screen info, aka type, so it will be easier to understand it
-                var pauseScreen = GetUIScreen(UIScreenInfo.PAUSE_SCREEN);
-                var ingameScreen = GetUIScreen(UIScreenInfo.IN_GAME_SCREEN);
-
-                //If the pause screen is not open : open it otherwise close it
-                if (!pauseScreen.IsOpen)
+                // If in game open pause screen
+                if (!(_gameState is GameState_Pause))
                 {
-                    if(m_ActiveScreen == ingameScreen)
+                    if(_gameState is GameState_InGame)
                     {
-                        if (IsAsScreenOpen())
-                            CloseAllScreens();
-
-                        OpenScreen(pauseScreen);
+                        TransitionTo(new GameState_Pause());
                         GameManager.Singleton.StopGame();
                     }
                 }
                 else 
                 {
-                    if (m_ActiveScreen == pauseScreen)
-                    {
-                        CloseScreen(pauseScreen);
-                        OpenScreen(ingameScreen);
-                        ////We are sure that we want to resume the game when we close a screen
-                        GameManager.Singleton.ResumeGame();
-                    }
+                    // Resume Game
+                    TransitionTo(new GameState_InGame());
+                    GameManager.Singleton.ResumeGame();
                 }
             }
 
@@ -114,6 +82,7 @@ namespace RedRunner
             {
                 Cursor.SetCursor(m_CursorDefaultTexture, Vector2.zero, CursorMode.Auto);
             }
+
         }
 
         public void OpenWindow(UIWindow window)
@@ -137,39 +106,6 @@ namespace RedRunner
             {
                 CloseWindow(m_ActiveWindow);
             }
-        }
-
-        public void OpenScreen(UIScreen screen)
-        {
-            CloseAllScreens();
-            screen.UpdateScreenStatus(true);
-            m_ActiveScreen = screen;
-        }
-
-        public void CloseScreen(UIScreen screen)
-        {
-            if (m_ActiveScreen == screen)
-            {
-                m_ActiveScreen = null;
-            }
-            screen.UpdateScreenStatus(false);
-        }
-
-        public void CloseAllScreens()
-        {
-            foreach (var screen in m_Screens)
-                CloseScreen(screen);
-        }
-
-        bool IsAsScreenOpen()
-        {
-            foreach (var screen in m_Screens)
-            {
-                if (screen.IsOpen)
-                    return true;
-            }
-
-            return false;
         }
     }
 
