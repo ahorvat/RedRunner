@@ -16,7 +16,7 @@ namespace RedRunner.UI
 
         public void AchievementObtained(string achievementText)
         {
-            text = achievementText;
+            UIManager.Singleton.setAchievementText(achievementText);
         }
 
     }
