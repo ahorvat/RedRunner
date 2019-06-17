@@ -26,6 +26,11 @@ public class FootstepSound : Sound
     {
         SetAudioClip(GetClipOnSequence(_FootstepClips, ref _index));
     }
+
+    public void ResetSettings()
+    {
+        ResetClipSequence(ref _index);
+    }
 }
 
 public class SoundStrategy_Footstep : SoundStrategy

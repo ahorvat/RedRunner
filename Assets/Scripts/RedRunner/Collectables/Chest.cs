@@ -161,7 +161,7 @@ namespace RedRunner.Collectables
 
 		public virtual void OnChestOpened ()
 		{
-			AudioManager.Singleton.PlayChestSound (transform.position);
+            AudioManager.Singleton.TriggerSound(new SoundStrategy_Chest());
 			m_ParticleSystem.Play ();
 			int coinsCount = Random.Range (m_MinimumCoins, m_MaximumCoins);
 			for (int i = 0; i < coinsCount; i++) {

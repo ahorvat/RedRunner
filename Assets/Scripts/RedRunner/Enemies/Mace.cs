@@ -78,7 +78,7 @@ namespace RedRunner.Enemies
 
 		public virtual void Slam (Vector3 position)
 		{
-			AudioManager.Singleton.PlayMaceSlamSound (transform.position);
+			AudioManager.Singleton.TriggerSound(new SoundStrategy_MaceSlam());
 			ParticleSystem particle = Instantiate<ParticleSystem> (m_ParticleSystem, position, m_ParticleSystem.transform.rotation);
 			Destroy (particle.gameObject, particle.main.duration);
 		}
@@ -88,7 +88,7 @@ namespace RedRunner.Enemies
 			m_PathFollower.Stopped = true;
 			target.Die (true);
 			m_Animator.SetTrigger ("Smile");
-			AudioManager.Singleton.PlaySpikeSound (transform.position);
+			AudioManager.Singleton.TriggerSound(new SoundStrategy_Spike());
 		}
 
 	}

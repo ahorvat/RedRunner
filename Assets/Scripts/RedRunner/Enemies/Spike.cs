@@ -44,8 +44,8 @@ namespace RedRunner.Enemies
 		{
 			target.Die (true);
 			m_FixedJoint2D.connectedBody = target.GetComponent<Skeleton> ().Body;
-			AudioManager.Singleton.PlaySpikeSound (transform.position);
-		}
+            AudioManager.Singleton.TriggerSound(new SoundStrategy_Spike());
+        }
 
 	}
 
