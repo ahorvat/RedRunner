@@ -7,10 +7,11 @@ namespace RedRunner
 
 	public class AudioManager : MonoBehaviour
 	{
+        private SoundStrategy _SoundStrategy;
 
-		#region Singleton
+        #region Singleton
 
-		private static AudioManager m_Singleton;
+        private static AudioManager m_Singleton;
 
 		public static AudioManager Singleton {
 			get {
@@ -71,13 +72,26 @@ namespace RedRunner
 		{
 			m_Singleton = this;
 			PlayMusic ();
-		}
+        }
 
-		#endregion
+        void Start()
+        {
+            this._SoundStrategy = new SoundStrategy_Chest();
+            _SoundStrategy.PlaySound();
+            SetStrategy(new SoundStrategy_Water());
+            _SoundStrategy.PlaySound();
+        }
 
-		#region Methods
+        #endregion
 
-		public void PlayMusic ()
+        #region Methods
+
+        public void SetStrategy(SoundStrategy strategy)
+        {
+            _SoundStrategy = strategy;
+        }
+
+        public void PlayMusic ()
 		{
 			m_MusicAudioSource.clip = m_MusicClip;
 			m_MusicAudioSource.Play ();
@@ -106,8 +120,10 @@ namespace RedRunner
 
 		public void PlayWaterSplashSound (Vector3 position)
 		{
-			PlaySoundOn (m_DieAudioSource, m_WaterSplashSound);
-		}
+            SetStrategy(new SoundStrategy_Water());
+            _SoundStrategy.PlaySound();
+            //PlaySoundOn (m_DieAudioSource, m_WaterSplashSound);
+        }
 
 		public void PlayMaceSlamSound (Vector3 position)
 		{
@@ -131,6 +147,7 @@ namespace RedRunner
 			PlaySoundOn (audio, m_JumpSound);
 		}
 
+        //not used
 		public void PlayFootstepSound (AudioSource audio)
 		{
 			if (m_FootstepSounds.Length > 0) {
@@ -140,7 +157,7 @@ namespace RedRunner
 
 		public void PlayFootstepSound (AudioSource audio, ref int index)
 		{
-			if (m_FootstepSounds.Length > 0) {
+            if (m_FootstepSounds.Length > 0) {
 				PlaySoundOn (audio, m_FootstepSounds [index]);
 				if (index < m_FootstepSounds.Length - 1) {
 					index++;
