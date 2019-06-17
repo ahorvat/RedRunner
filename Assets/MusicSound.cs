@@ -2,24 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChestSound : Sound
+public class MusicSound : Sound
 {
-    private static Singleton<ChestSound> _singleton;
+    private static Singleton<MusicSound> _singleton;
 
-    public ChestSound()
+    public MusicSound()
     {
-        _singleton = new Singleton<ChestSound>(this);
+        _singleton = new Singleton<MusicSound>(this);
     }
 
-    public static ChestSound GetInstance()
+    public static MusicSound GetInstance()
     {
         return _singleton.GetInstance();
     }
+
 }
 
-public class SoundStrategy_Chest : SoundStrategy
+public class SoundStrategy_Music : SoundStrategy
 {
-    public SoundStrategy_Chest()
+    public SoundStrategy_Music()
     {
         this._Sound = ChestSound.GetInstance();
     }

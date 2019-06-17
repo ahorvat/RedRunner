@@ -76,10 +76,7 @@ namespace RedRunner
 
         void Start()
         {
-            this._SoundStrategy = new SoundStrategy_Chest();
-            _SoundStrategy.PlaySound();
-            SetStrategy(new SoundStrategy_Water());
-            _SoundStrategy.PlaySound();
+            this._SoundStrategy = new SoundStrategy_Music();
         }
 
         #endregion
@@ -91,32 +88,40 @@ namespace RedRunner
             _SoundStrategy = strategy;
         }
 
+        public void PlaySoundAt(AudioClip clip, Vector3 position, float volume)
+        {
+            AudioSource.PlayClipAtPoint(clip, position, volume);
+        }
+
+        public void PlaySoundOn(AudioSource audio, AudioClip clip)
+        {
+            audio.clip = clip;
+            audio.Play();
+        }
+
+
         public void PlayMusic ()
 		{
-			m_MusicAudioSource.clip = m_MusicClip;
-			m_MusicAudioSource.Play ();
-		}
-
-		public void PlaySoundAt (AudioClip clip, Vector3 position, float volume)
-		{
-			AudioSource.PlayClipAtPoint (clip, position, volume);
-		}
-
-		public void PlaySoundOn (AudioSource audio, AudioClip clip)
-		{
-			audio.clip = clip;
-			audio.Play ();
-		}
+            //m_MusicAudioSource.clip = m_MusicClip;
+            //m_MusicAudioSource.Play ();
+            //PlaySoundOn(m_MusicAudioSource, m_MusicClip);
+            SetStrategy(new SoundStrategy_Music());
+            _SoundStrategy.PlaySound();
+        }
 
 		public void PlayChestSound (Vector3 position)
 		{
-			PlaySoundOn (m_CoinAudioSource, m_ChestSound);
-		}
+			//PlaySoundOn (m_CoinAudioSource, m_ChestSound);
+            SetStrategy(new SoundStrategy_Chest());
+            _SoundStrategy.PlaySound();
+        }
 
 		public void PlayCoinSound (Vector3 position)
 		{
-			PlaySoundOn (m_CoinAudioSource, m_CoinSound);
-		}
+            //PlaySoundOn (m_CoinAudioSource, m_CoinSound);
+            SetStrategy(new SoundStrategy_Coin());
+            _SoundStrategy.PlaySound();
+        }
 
 		public void PlayWaterSplashSound (Vector3 position)
 		{
@@ -127,50 +132,62 @@ namespace RedRunner
 
 		public void PlayMaceSlamSound (Vector3 position)
 		{
-			PlaySoundOn (m_MaceSlamAudioSource, m_MaceSlamSound);
-		}
+            //PlaySoundOn (m_MaceSlamAudioSource, m_MaceSlamSound);
+            SetStrategy(new SoundStrategy_MaceSlam());
+            _SoundStrategy.PlaySound();
+        }
 
 		public void PlaySpikeSound (Vector3 position)
 		{
-			PlaySoundOn (m_DieAudioSource, m_SpikeSound);
-		}
+            //PlaySoundOn (m_DieAudioSource, m_SpikeSound);
+            SetStrategy(new SoundStrategy_Spike());
+            _SoundStrategy.PlaySound();
+        }
 
 		public void PlayGroundedSound (AudioSource audio)
 		{
-			if (m_GroundedSounds.Length > 0) {
-				PlaySoundOn (audio, GetRandomClip (m_GroundedSounds));
-			}
-		}
+            //if (m_GroundedSounds.Length > 0) {
+            //	PlaySoundOn (audio, GetRandomClip (m_GroundedSounds));
+            //}
+            SetStrategy(new SoundStrategy_ReachGround());
+            _SoundStrategy.PlaySound();
+        }
 
 		public void PlayJumpSound (AudioSource audio)
 		{
-			PlaySoundOn (audio, m_JumpSound);
-		}
+			//PlaySoundOn (audio, m_JumpSound);
+            SetStrategy(new SoundStrategy_Jump());
+            _SoundStrategy.PlaySound();
+        }
 
         //not used
 		public void PlayFootstepSound (AudioSource audio)
 		{
-			if (m_FootstepSounds.Length > 0) {
-				PlaySoundOn (audio, GetRandomClip (m_FootstepSounds));
-			}
+			//if (m_FootstepSounds.Length > 0) {
+			//	PlaySoundOn (audio, GetRandomClip (m_FootstepSounds));
+			//}
 		}
 
 		public void PlayFootstepSound (AudioSource audio, ref int index)
 		{
-            if (m_FootstepSounds.Length > 0) {
-				PlaySoundOn (audio, m_FootstepSounds [index]);
-				if (index < m_FootstepSounds.Length - 1) {
-					index++;
-				} else {
-					index = 0;
-				}
-			}
-		}
+            //         if (m_FootstepSounds.Length > 0) {
+            //	PlaySoundOn (audio, m_FootstepSounds [index]);
+            //	if (index < m_FootstepSounds.Length - 1) {
+            //		index++;
+            //	} else {
+            //		index = 0;
+            //	}
+            //}
+            SetStrategy(new SoundStrategy_Footstep());
+            _SoundStrategy.PlaySound();
+        }
 
 		public void PlayClickSound ()
 		{
-			PlaySoundOn (m_UIAudioSource, m_ButtonClickSound);
-		}
+            //PlaySoundOn (m_UIAudioSource, m_ButtonClickSound);
+            SetStrategy(new SoundStrategy_Click());
+            _SoundStrategy.PlaySound();
+        }
 
 		public AudioClip GetRandomClip (AudioClip[] clips)
 		{

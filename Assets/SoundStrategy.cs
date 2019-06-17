@@ -18,14 +18,46 @@ public class Sound : MonoBehaviour
         }
     }
 
-    public AudioSource GetAudioSource()
+    public void SetAudioClip(AudioClip newClip)
     {
-        return _AudioSource;
+        _AudioClip = newClip;
+    }
+    
+    public AudioClip GetRandomClip(AudioClip[] clips)
+    {
+        if (clips.Length > 0)
+        {
+            // Get a random clip from clips source
+            return clips[Random.Range(0, clips.Length)];
+        }
+        return null;
     }
 
-    public AudioClip GetAudioClip()
+    public AudioClip GetClipOnSequence(AudioClip[] clips, ref int index)
     {
-        return _AudioClip;
+        if (clips.Length > 0)
+        {
+            // Get next clip on sequence
+            AudioClip nextClip = clips[index];
+
+            // Handle clip sequence
+            if (index < clips.Length - 1)
+            {
+                index++;
+            }
+            else
+            {
+                index = 0;
+            }
+
+            return nextClip;
+        }
+        return null;
+    }
+
+    public void ResetClipSequence(ref int index)
+    {
+        index = 0;
     }
 }
 
@@ -34,30 +66,4 @@ public abstract class SoundStrategy
     protected Sound _Sound = null;
 
     public abstract void PlaySound();
-}
-
-public class SoundStrategy_Chest : SoundStrategy
-{
-    public SoundStrategy_Chest()
-    {
-        this._Sound = ChestSound.GetInstance();
-    }
-
-    public override void PlaySound()
-    {
-        _Sound.PlayNormalSound();
-    }
-}
-
-public class SoundStrategy_Water : SoundStrategy
-{
-    public SoundStrategy_Water()
-    {
-        this._Sound = DeathSound.GetInstance();
-    }
-
-    public override void PlaySound()
-    {
-        _Sound.PlayNormalSound();
-    }
 }
