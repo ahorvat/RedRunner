@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RedRunner.UI;
 using System.Linq;
+using UnityEngine.UI;
 
 namespace RedRunner
 {
@@ -27,6 +28,7 @@ namespace RedRunner
         private Texture2D m_CursorClickTexture;
         [SerializeField]
         private float m_CursorHideDelay = 1f;
+        private Text m_AchievementText;
 
         void Awake()
         {
@@ -38,6 +40,7 @@ namespace RedRunner
             }
             m_Singleton = this;
             Cursor.SetCursor(m_CursorDefaultTexture, Vector2.zero, CursorMode.Auto);
+            m_AchievementText = GameObject.Find("Achievement Text").GetComponent<UIAchievementText>();
         }
 
         public void TransitionTo(UIScreenState state)
@@ -106,6 +109,11 @@ namespace RedRunner
             {
                 CloseWindow(m_ActiveWindow);
             }
+        }
+
+        public void setAchievementText(string text)
+        {
+            m_AchievementText.text = text;
         }
     }
 
