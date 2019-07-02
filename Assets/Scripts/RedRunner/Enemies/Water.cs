@@ -34,7 +34,7 @@ namespace RedRunner.Enemies
 			spawnPosition.y += -1f;
 			ParticleSystem particle = Instantiate<ParticleSystem> (target.WaterParticleSystem, spawnPosition, Quaternion.identity);
 			Destroy (particle.gameObject, particle.main.duration);
-			AudioManager.Singleton.PlayWaterSplashSound (transform.position);
+			AudioManager.Singleton.TriggerSound(new SoundStrategy_Water());
 		}
 
 	}

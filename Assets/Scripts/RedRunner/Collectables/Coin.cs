@@ -71,7 +71,7 @@ namespace RedRunner.Collectables
 			m_SpriteRenderer.enabled = false;
 			m_Collider2D.enabled = false;
 			Destroy (gameObject, m_ParticleSystem.main.duration);
-			AudioManager.Singleton.PlayCoinSound (transform.position);
+			AudioManager.Singleton.TriggerSound(new SoundStrategy_Coin());
 		}
 	}
 }

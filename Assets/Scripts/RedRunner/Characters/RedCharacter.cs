@@ -74,7 +74,6 @@ namespace RedRunner.Characters
         protected Vector2 m_Speed = Vector2.zero;
         protected float m_CurrentRunSpeed = 0f;
         protected float m_CurrentSmoothVelocity = 0f;
-        protected int m_CurrentFootstepSoundIndex = 0;
         protected Vector3 m_InitialScale;
         protected Vector3 m_InitialPosition;
 
@@ -272,7 +271,7 @@ namespace RedRunner.Characters
             m_ClosingEye = false;
             m_Guard = false;
             m_Block = false;
-            m_CurrentFootstepSoundIndex = 0;
+            FootstepSound.GetInstance().ResetSettings();
             GameManager.OnReset += GameManager_OnReset;
         }
 
@@ -436,7 +435,7 @@ namespace RedRunner.Characters
         {
             if (m_GroundCheck.IsGrounded)
             {
-                AudioManager.Singleton.PlayFootstepSound(m_FootstepAudioSource, ref m_CurrentFootstepSoundIndex);
+                AudioManager.Singleton.TriggerSound(new SoundStrategy_Footstep());
             }
         }
 
@@ -479,7 +478,7 @@ namespace RedRunner.Characters
                     m_Animator.ResetTrigger("Jump");
                     m_Animator.SetTrigger("Jump");
                     m_JumpParticleSystem.Play();
-                    AudioManager.Singleton.PlayJumpSound(m_JumpAndGroundedAudioSource);
+                    AudioManager.Singleton.TriggerSound(new SoundStrategy_Jump());
                 }
             }
         }
@@ -521,7 +520,7 @@ namespace RedRunner.Characters
             m_ClosingEye = false;
             m_Guard = false;
             m_Block = false;
-            m_CurrentFootstepSoundIndex = 0;
+            FootstepSound.GetInstance().ResetSettings();
             transform.localScale = m_InitialScale;
             m_Rigidbody2D.velocity = Vector2.zero;
             m_Skeleton.SetActive(false, m_Rigidbody2D.velocity);
@@ -559,7 +558,7 @@ namespace RedRunner.Characters
             if (!IsDead.Value)
             {
                 m_JumpParticleSystem.Play();
-                AudioManager.Singleton.PlayGroundedSound(m_JumpAndGroundedAudioSource);
+                AudioManager.Singleton.TriggerSound(new SoundStrategy_ReachGround());
             }
         }
 
